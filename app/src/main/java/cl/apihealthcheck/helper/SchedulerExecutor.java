@@ -10,7 +10,7 @@ import cl.apihealthcheck.service.impl.StatusCheckImpl;
 
 public class SchedulerExecutor {
     private static final StatusCheckImpl statusCheckImpl = new StatusCheckImpl();
-    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static void start() {
