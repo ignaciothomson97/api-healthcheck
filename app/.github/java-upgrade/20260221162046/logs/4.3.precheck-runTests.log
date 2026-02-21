@@ -1,0 +1,6 @@
+2026-02-21T16:35:40.868Z [INFO] [MavenBuildTool] Running test cases of /home/ignaciothomson/Escritorio/Java/api-healthcheck/app using Maven
+2026-02-21T16:35:40.869Z [INFO] [Environment] Running command (Java 17): mvn clean test -q -B -fn
+2026-02-21T16:35:45.972Z [INFO] [MavenBuildTool] loading surefire reports.
+2026-02-21T16:35:45.980Z [INFO] [MavenBuildTool] summarizing surefire reports.
+2026-02-21T16:35:45.980Z [INFO] [MavenBuildTool] Cleaning /home/ignaciothomson/Escritorio/Java/api-healthcheck/app using Maven
+2026-02-21T16:35:45.980Z [INFO] [Environment] Running command (Java 17): mvn clean -q -B -fn
