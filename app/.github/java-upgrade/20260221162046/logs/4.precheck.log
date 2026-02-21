@@ -1,0 +1,51 @@
+2026-02-21T16:33:59.886Z [INFO] Prechecking project app...
+2026-02-21T16:33:59.886Z [INFO] Prechecking build status...
+2026-02-21T16:34:03.244Z [INFO] Prechecking CVEs...
+2026-02-21T16:35:40.868Z [INFO] Prechecking tests...
+2026-02-21T16:35:40.868Z [INFO] Run tests before upgrading...
+2026-02-21T16:35:46.870Z [INFO] Prepare initial state...
+2026-02-21T16:35:46.870Z [INFO] [Project app]: getting project state.
+2026-02-21T16:35:46.870Z [INFO] [Project app]: getting Java version.
+2026-02-21T16:35:46.870Z [INFO] [Project app]: got Java version: 17
+2026-02-21T16:35:46.870Z [INFO] [Project app]: getting dependencies promise.
+2026-02-21T16:35:46.870Z [INFO] Project initial state: {
+  "javaVersion": "17",
+  "dependencies": [
+    {
+      "groupId": "org.postgresql",
+      "artifactId": "postgresql",
+      "type": "jar",
+      "version": "42.7.3",
+      "scope": "compile",
+      "module": "app"
+    },
+    {
+      "groupId": "java",
+      "artifactId": "*",
+      "version": "17"
+    }
+  ],
+  "buildResult": {
+    "numOfJavaFiles": 10,
+    "numOfClassFiles": 10,
+    "modulesBuildResult": {
+      ".": {
+        "numOfJavaFiles": 10,
+        "numOfClassFiles": 10
+      }
+    },
+    "errors": [],
+    "command": "mvn clean test-compile -q -B -fn"
+  },
+  "testResult": {
+    "errors": [],
+    "failures": [],
+    "summary": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "reports": []
+  }
+}

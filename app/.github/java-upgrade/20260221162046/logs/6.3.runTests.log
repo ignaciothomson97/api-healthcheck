@@ -1,0 +1,20 @@
+2026-02-21T16:36:54.700Z [INFO] [BaseBuildTool] Firing config modified event for mvn, sleeping for 5 seconds
+2026-02-21T16:36:54.700Z [INFO] [Environment] Running command (Java 21): mvn --version
+Apache Maven 3.9.12 (848fbb4bf2d427b72bdb2471c22fced7ebd9a7a1)
+Maven home: /home/ignaciothomson/.maven/maven-3.9.12
+Java version: 21.0.8, vendor: Microsoft, runtime: /home/ignaciothomson/.jdk/jdk-21.0.8
+Default locale: es_CL, platform encoding: UTF-8
+OS name: "linux", version: "6.18.12-200.fc43.x86_64", arch: "amd64", family: "unix"
+2026-02-21T16:36:54.867Z [INFO] [BaseBuildTool] New version of mvn: 3.9.12 -> 3.9.12
+2026-02-21T16:36:54.867Z [INFO] [MavenBuildTool] Getting Java version of /home/ignaciothomson/Escritorio/Java/api-healthcheck/app from pom.xml
+2026-02-21T16:36:54.867Z [INFO] [MavenBuildTool] Searching for pom.xml files in /home/ignaciothomson/Escritorio/Java/api-healthcheck/app
+2026-02-21T16:36:54.867Z [INFO] [MavenBuildTool] Found pom.xml files: /home/ignaciothomson/Escritorio/Java/api-healthcheck/app/pom.xml
+2026-02-21T16:36:54.867Z [INFO] [MavenBuildTool] Java version found in /home/ignaciothomson/Escritorio/Java/api-healthcheck/app/pom.xml: 21
+2026-02-21T16:36:54.867Z [INFO] [BaseBuildTool] Notifying Java version/Config change: '21' || '21'
+2026-02-21T16:36:54.868Z [INFO] Running tests...
+2026-02-21T16:36:54.868Z [INFO] [MavenBuildTool] Running test cases of /home/ignaciothomson/Escritorio/Java/api-healthcheck/app using Maven
+2026-02-21T16:36:54.868Z [INFO] [Environment] Running command (Java 21): mvn clean test -q -B -fn
+2026-02-21T16:36:56.548Z [INFO] [MavenBuildTool] loading surefire reports.
+2026-02-21T16:36:56.550Z [INFO] [MavenBuildTool] summarizing surefire reports.
+2026-02-21T16:36:56.550Z [INFO] [MavenBuildTool] Cleaning /home/ignaciothomson/Escritorio/Java/api-healthcheck/app using Maven
+2026-02-21T16:36:56.550Z [INFO] [Environment] Running command (Java 21): mvn clean -q -B -fn
