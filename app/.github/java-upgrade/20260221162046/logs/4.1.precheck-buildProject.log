@@ -1,7 +1,0 @@
-2026-02-21T16:33:59.886Z [INFO] [MavenBuildTool] Getting build errors of /home/ignaciothomson/Escritorio/Java/api-healthcheck/app using Maven
-2026-02-21T16:33:59.886Z [INFO] [Environment] Running command (Java 17): mvn clean test-compile -q -B -fn
-2026-02-21T16:34:02.346Z [INFO] [MavenBuildTool] parsing compilation errors.
-2026-02-21T16:34:02.346Z [INFO] [BaseBuildTool] Found 1 modules: .
-2026-02-21T16:34:02.349Z [INFO] [BaseBuildTool] Finish counting Java and class files
-2026-02-21T16:34:02.349Z [INFO] [MavenBuildTool] Cleaning /home/ignaciothomson/Escritorio/Java/api-healthcheck/app using Maven
-2026-02-21T16:34:02.349Z [INFO] [Environment] Running command (Java 17): mvn clean -q -B -fn
