@@ -18,7 +18,7 @@ public class RequestHandler {
             HttpRequest request = HttpRequest.newBuilder().uri(new URI(uri)).GET().build();
             return httpClient.send(request, BodyHandlers.ofString()).statusCode();
         } catch (IOException | InterruptedException | URISyntaxException e) {
-            LOGGER.warning("Ha ocurrido una excepción al solicitar el servicio.");
+            LOGGER.severe(() -> "Ha ocurrido una excepción al solicitar el servicio: " + uri + " - " + e.getMessage());
             return 0;
         }
     }

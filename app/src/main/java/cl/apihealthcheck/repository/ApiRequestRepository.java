@@ -33,7 +33,7 @@ public class ApiRequestRepository {
                 ptsmt.setString(5, apiRequest.getLastErrorMessage());
                 ptsmt.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.severe("Ha ocurrido un error en UPSERT");
+            LOGGER.severe(() -> "Ha ocurrido un error en UPSERT: " + e.getMessage());
         }
     }
 }

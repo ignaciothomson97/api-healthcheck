@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cl.apihealthcheck.constants.Constants;
@@ -52,7 +51,7 @@ public class StatusCheckImpl implements Healthcheck {
     }
 
     private void persistData(ApiRequest apiRequest) {
-        LOGGER.log(Level.INFO, "Persistiendo resultado de: {0} (Status: {1})", new Object[]{apiRequest.getApiName(), apiRequest.getLastStatus()});
+        LOGGER.info(() -> "Persistiendo resultado de: " + apiRequest.getApiName() + " (Status: " + apiRequest.getLastStatus() + ")");
         ApiRequestRepository.upsertStatus(apiRequest);
     }
 }
