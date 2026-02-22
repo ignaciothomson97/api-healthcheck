@@ -60,7 +60,7 @@ public class RequestHandler {
 
     private static void waitUntilRetry() {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(5000);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
