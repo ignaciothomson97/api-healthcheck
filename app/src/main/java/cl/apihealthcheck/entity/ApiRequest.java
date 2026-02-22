@@ -1,36 +1,47 @@
 package cl.apihealthcheck.entity;
 
+import java.sql.Timestamp;
+
 public class ApiRequest {
     private final String apiName;
-    private final Integer lastStatus;
+    private final Integer status;
+    private final Timestamp checked;
     private final boolean isUp;
-    private final String lastErrorMessage;
+    private final String errorMessage;
 
     private ApiRequest(Builder builder) {
         this.apiName = builder.apiName;
-        this.lastStatus = builder.lastStatus;
+        this.status = builder.status;
+        this.checked = builder.checked;
         this.isUp = builder.isUp;
-        this.lastErrorMessage = builder.lastErrorMessage;
+        this.errorMessage = builder.errorMessage;
     }
 
     public String getApiName() { return apiName; }
-    public Integer getLastStatus() { return lastStatus; }
+    public Integer getStatus() { return status; }
+    public Timestamp getChecked() { return checked; }
     public boolean getIsUp() { return isUp; }
-    public String getLastErrorMessage() { return lastErrorMessage; }
+    public String getErrorMessage() { return errorMessage; }
 
     public static class Builder {
         private String apiName;
-        private Integer lastStatus;
+        private Integer status;
+        private Timestamp checked;
         private boolean isUp;
-        private String lastErrorMessage;
+        private String errorMessage;
 
         public Builder apiName(String apiName) {
             this.apiName = apiName;
             return this;
         }
 
-        public Builder lastStatus(Integer lastStatus) {
-            this.lastStatus = lastStatus;
+        public Builder status(Integer status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder checked(Timestamp checked) {
+            this.checked = checked;
             return this;
         }
 
@@ -39,8 +50,8 @@ public class ApiRequest {
             return this;
         }
 
-        public Builder lastErrorMessage(String lastErrorMessage) {
-            this.lastErrorMessage = lastErrorMessage;
+        public Builder errorMessage(String errorMessage) {
+            this.errorMessage = errorMessage;
             return this;
         }
 

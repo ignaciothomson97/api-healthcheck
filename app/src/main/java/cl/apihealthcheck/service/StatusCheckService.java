@@ -1,5 +1,5 @@
 package cl.apihealthcheck.service;
 
-public interface HealthcheckService {
+public interface StatusCheckService {
     void parallelCheck();
 }
