@@ -15,12 +15,15 @@ import cl.apihealthcheck.service.HealthcheckService;
 
 public class StatusCheckImpl implements HealthcheckService {
 
-    private final ExecutorService ioExecutor = Executors.newFixedThreadPool(10);
+    private final Map<String, String> targetMap = returnTargetList();
     private final static Logger LOGGER = Logger.getLogger(StatusCheckImpl.class.getName());
+
+    // Configuramos N cantidad de hilos por cada Target (API) en el Map, pero con un limite de 20. Enfoque equilibrado.
+    private final ExecutorService ioExecutor = Executors.newFixedThreadPool(Math.min(targetMap.size(), 20));
 
     @Override
     public void parallelCheck() {
-        for (Map.Entry<String, String> entry : returnTargetList().entrySet()) {
+        for (Map.Entry<String, String> entry : targetMap.entrySet()) {
             String apiName = entry.getKey();
             String targetUrl = entry.getValue();
             CompletableFuture.supplyAsync(() -> RequestHandler.buildRequest(targetUrl), ioExecutor)
