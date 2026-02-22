@@ -16,11 +16,21 @@ import java.util.logging.Logger;
 
 public class RequestHandler {
 
+    /*
+    - Si el LOGGER no fuera static, por cada instancia de RequestHandler, se crearia uno nuevo. Imagina 10.000
+    - RequestHandlers, tendrían 10.000 LOGGERs diferentes. Es mejor tener uno, compartido por todas las instancias de clase.
+    - Usamos static en clases que no deben cambiar con el tiempo, que no guardan estado, que son constantes o tambien funciones puras
+      como Math.min(0, 1), ej: funciones como de calculadora, calculan un valor y devuelven el resultado, nada más
+     */
     private static final Logger LOGGER = Logger.getLogger(RequestHandler.class.getName());
     private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(30)).build();
 
-    public static RestResponse buildRequest(String uri) {
+    // Thread Safe, cada hilo genera su propia instancia con las variables locales del metodo. Cada uno vive en el stack del hilo.
+    // También mencionar que HttpClient está diseñado para ser Thread Safe e Inmutable, desde Java 11
+    // Heap es donde viven los objetos compartidos por el programa, cada instancia nueva se genera aca, y el GC pasa por aca para limpiar lo que no se usa
+    // Stack se refiere a la memoria privada de corto plazo de cada hilo, guarda las variables primitivas propias del metodo y las REFERENCIAS a objetos que viven en el Heap
+    public static RestResponse buildRequest(String uri, String apiName) {
         int maxRetries = 3;
         int attempt = 0;
         while (true) {
@@ -45,7 +55,7 @@ public class RequestHandler {
                 if (attempt < maxRetries) {
                     waitUntilRetry();
                 } else {
-                    LOGGER.severe("Se agotaron los reintentos para " + uri);
+                    LOGGER.severe("Se agotaron los reintentos para " + apiName);
                     return new RestResponse(0, "", "ConnectException tras " + maxRetries + " intentos");
                 }
             } catch (HttpTimeoutException e) {

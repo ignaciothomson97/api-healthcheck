@@ -24,9 +24,10 @@ public class StatusCheckImpl implements HealthcheckService {
     @Override
     public void parallelCheck() {
         for (Map.Entry<String, String> entry : targetMap.entrySet()) {
-            String apiName = entry.getKey();
             String targetUrl = entry.getValue();
-            CompletableFuture.supplyAsync(() -> RequestHandler.buildRequest(targetUrl), ioExecutor)
+            String apiName = entry.getKey();
+
+            CompletableFuture.supplyAsync(() -> RequestHandler.buildRequest(targetUrl, apiName), ioExecutor)
                 .thenAccept(result -> persistEntity(buildEntity(apiName, result)))
                 .exceptionally(ex -> {
                     LOGGER.severe("Error crítico en hilo asíncrono para " + apiName + ": " + ex.getMessage());
