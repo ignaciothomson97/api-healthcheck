@@ -18,7 +18,7 @@ public class RequestHandler {
 
     private static final Logger LOGGER = Logger.getLogger(RequestHandler.class.getName());
     private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(5)).build();
+            .connectTimeout(Duration.ofSeconds(30)).build();
 
     public static RestResponse buildRequest(String uri) {
         int maxRetries = 3;
@@ -30,7 +30,7 @@ public class RequestHandler {
                         .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
                                 "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
                         .header("Accept", "application/json")
-                        .timeout(Duration.ofSeconds(15)) // Patrón 'Timeout'
+                        .timeout(Duration.ofSeconds(30)) // Patrón 'Timeout'
                         .GET()
                         .build();
                 HttpResponse<String> response = HTTP_CLIENT.send(request, BodyHandlers.ofString());
