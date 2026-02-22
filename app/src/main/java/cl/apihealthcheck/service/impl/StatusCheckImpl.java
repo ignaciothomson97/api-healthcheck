@@ -1,6 +1,6 @@
 package cl.apihealthcheck.service.impl;
 
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,49 +9,58 @@ import java.util.logging.Logger;
 import cl.apihealthcheck.constants.Constants;
 import cl.apihealthcheck.entity.ApiRequest;
 import cl.apihealthcheck.helper.RequestHandler;
+import cl.apihealthcheck.model.RestResponse;
 import cl.apihealthcheck.repository.ApiRequestRepository;
-import cl.apihealthcheck.service.Healthcheck;
+import cl.apihealthcheck.service.HealthcheckService;
 
-public class StatusCheckImpl implements Healthcheck {
+public class StatusCheckImpl implements HealthcheckService {
 
-    private final ExecutorService ioExecutor = Executors.newFixedThreadPool(4);
+    private final ExecutorService ioExecutor = Executors.newFixedThreadPool(10);
     private final static Logger LOGGER = Logger.getLogger(StatusCheckImpl.class.getName());
 
     @Override
     public void parallelCheck() {
-        List<String> targets = buildTargets();
-        for (String target : targets) {
-            CompletableFuture.supplyAsync(() -> RequestHandler.buildRequest(target), ioExecutor)
+        for (Map.Entry<String, String> entry : returnTargetList().entrySet()) {
+            String apiName = entry.getKey();
+            String targetUrl = entry.getValue();
+            CompletableFuture.supplyAsync(() -> RequestHandler.buildRequest(targetUrl), ioExecutor)
                 .thenAccept(result -> {
-                    persistData(buildApiRequest(target, result));
+                    persistEntity(buildEntity(apiName, result));
                 })
                 .exceptionally(ex -> {
-                    LOGGER.severe("Error en operación asíncrona");
+                    LOGGER.severe("Error crítico en hilo asíncrono para " + apiName + ": " + ex.getMessage());
                     return null;
                 });
         }
     }
 
-    private List<String> buildTargets() {
-        return List.of(
-            Constants.REDDIT_API,
-            Constants.LINKEDIN_API, 
-            Constants.DISCORD_API, 
-            Constants.GITHUB_API
+    private Map<String, String> returnTargetList() {
+        return Map.of(
+            Constants.REDDIT, Constants.REDDIT_API,
+            Constants.LINKEDIN, Constants.LINKEDIN_API,
+            Constants.DISCORD, Constants.DISCORD_API,
+            Constants.GITHUB, Constants.GITHUB_API
         );
     }
 
-    private ApiRequest buildApiRequest(String target, int result) {
+    // Cambiar target, para caso en que la URL sea muy larga
+    private ApiRequest buildEntity(String target, RestResponse restResponse) {
         return new ApiRequest.Builder()
             .apiName(target)
-            .lastStatus(result)
-            .isUp(result <= 300 && result >= 200)
-            .lastErrorMessage("")
+            .lastStatus(restResponse.statusCode())
+            .isUp(restResponse.isSuccess())
+            .lastErrorMessage(restResponse.errorMessage())
             .build();
     }
 
-    private void persistData(ApiRequest apiRequest) {
+    private void persistEntity(ApiRequest apiRequest) {
         LOGGER.info(() -> "Persistiendo resultado de: " + apiRequest.getApiName() + " (Status: " + apiRequest.getLastStatus() + ")");
         ApiRequestRepository.upsertStatus(apiRequest);
     }
+
+    /**
+     * Modificar la tabla para que guarde registros por 1 semana, despues, se limpia la tabla.
+     * Justo antes de limpiar la tabla, guardaremos los registros de la misma en un log.
+     * TODO: Añadir interactividad, generar un modelo pub/sub para notificar eventos
+     */
 }
