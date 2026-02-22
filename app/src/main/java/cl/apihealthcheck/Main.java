@@ -13,7 +13,7 @@ public class Main {
        SchedulerExecutor monitor =  new SchedulerExecutor();
 
        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-           LOGGER.info("\n[SYSTEM] Señal de apagado detectada. Cerrando recursos de forma segura...");
+           LOGGER.info("[SYSTEM] Señal de apagado detectada. Cerrando recursos de forma segura...");
            monitor.stopAll();
        }));
 
