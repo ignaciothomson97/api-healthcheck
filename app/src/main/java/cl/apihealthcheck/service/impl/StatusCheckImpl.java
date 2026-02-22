@@ -24,9 +24,7 @@ public class StatusCheckImpl implements HealthcheckService {
             String apiName = entry.getKey();
             String targetUrl = entry.getValue();
             CompletableFuture.supplyAsync(() -> RequestHandler.buildRequest(targetUrl), ioExecutor)
-                .thenAccept(result -> {
-                    persistEntity(buildEntity(apiName, result));
-                })
+                .thenAccept(result -> persistEntity(buildEntity(apiName, result)))
                 .exceptionally(ex -> {
                     LOGGER.severe("Error crítico en hilo asíncrono para " + apiName + ": " + ex.getMessage());
                     return null;
@@ -58,9 +56,9 @@ public class StatusCheckImpl implements HealthcheckService {
         ApiRequestRepository.upsertStatus(apiRequest);
     }
 
-    /**
-     * Modificar la tabla para que guarde registros por 1 semana, despues, se limpia la tabla.
-     * Justo antes de limpiar la tabla, guardaremos los registros de la misma en un log.
-     * TODO: Añadir interactividad, generar un modelo pub/sub para notificar eventos
+    /*
+      Modificar la tabla para que guarde registros por 1 semana, despues, se limpia la tabla.
+      Justo antes de limpiar la tabla, guardaremos los registros de la misma en un log.
+      TODO: Añadir interactividad, generar un modelo pub/sub para notificar eventos
      */
 }
