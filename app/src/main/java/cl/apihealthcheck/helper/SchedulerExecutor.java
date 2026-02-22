@@ -8,18 +8,13 @@ import java.util.logging.Logger;
 import cl.apihealthcheck.service.impl.StatusCheckImpl;
 
 public class SchedulerExecutor {
-    // LOGGER estático pero SCHEDULER de instancia
     private static final Logger LOGGER = Logger.getLogger(SchedulerExecutor.class.getName());
-
-    // Este Scheduler lo dejé como static, lo cual en un futuro generaría problemas si por ejemplo quiero crear más de una instancia del
-    // SchedulerExecutor
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final StatusCheckImpl statusCheck = new StatusCheckImpl();
 
     public void start() {
         LOGGER.info("Iniciando Monitor de APIs...");
 
-        // Envolvemos la tarea no la programación (scheduled)
         Runnable safeTask = () -> {
             try {
                 statusCheck.parallelCheck();

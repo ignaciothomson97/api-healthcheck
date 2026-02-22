@@ -15,10 +15,8 @@ import cl.apihealthcheck.service.HealthcheckService;
 
 public class StatusCheckImpl implements HealthcheckService {
 
-    private final Map<String, String> targetMap = returnTargetList();
     private final static Logger LOGGER = Logger.getLogger(StatusCheckImpl.class.getName());
-
-    // Configuramos N cantidad de hilos por cada Target (API) en el Map, pero con un limite de 20. Enfoque equilibrado.
+    private final Map<String, String> targetMap = returnTargetList();
     private final ExecutorService ioExecutor = Executors.newFixedThreadPool(Math.min(targetMap.size(), 20));
 
     @Override
@@ -45,7 +43,6 @@ public class StatusCheckImpl implements HealthcheckService {
         );
     }
 
-    // Cambiar target, para caso en que la URL sea muy larga
     private ApiRequest buildEntity(String target, RestResponse restResponse) {
         return new ApiRequest.Builder()
             .apiName(target)
