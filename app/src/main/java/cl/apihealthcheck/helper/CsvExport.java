@@ -3,6 +3,7 @@ package cl.apihealthcheck.helper;
 import cl.apihealthcheck.entity.ApiRequest;
 import cl.apihealthcheck.repository.RequestRepository;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,39 +14,51 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class CsvExport {
-
     private static final Logger LOGGER = Logger.getLogger(CsvExport.class.getName());
-    private final RequestRepository requestRepository = new RequestRepository();
+    private static final String BACKUP_DIRECTORY = "db-backup/";
+    private final RequestRepository requestRepository;
 
-    public void exportAndCleanRecords() {
-        LOGGER.info("Iniciando volcado de BD a CSV...");
+    public CsvExport(RequestRepository requestRepository) {
+        this.requestRepository = requestRepository;
+    }
+
+    public void exportRecords() {
+        LOGGER.info("Respaldo CSV en proceso...");
+
         List<ApiRequest> requests = requestRepository.findAll();
-
         if (requests.isEmpty()) {
             LOGGER.info("La BD está vacía. Nada que exportar");
             return;
         }
 
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String fileName = "api_monitor_backup_" + currentDate + ".csv";
-        Path filePath = Paths.get(fileName);
-
-        StringBuilder csvContent = new StringBuilder();
-        csvContent.append("API Name,Status Code,Is UP,Error Message\n");
-
-        for (ApiRequest req : requests) {
-            csvContent.append(req.getApiName()).append(",")
-                    .append(req.getStatus()).append(",")
-                    .append(req.getIsUp()).append(",")
-                    .append(req.getErrorMessage()).append(",");
-        }
+        Path directoryPath = Paths.get(BACKUP_DIRECTORY);
+        Path filePath = directoryPath.resolve("api_monitor_backup_" + currentDate + ".csv");
 
         try {
-            Files.writeString(filePath, csvContent.toString());
+            Files.createDirectories(directoryPath);
+            try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
+                writer.write("\"API Name\",\"Status Code\",Checked,\"Is UP\",\"Error Message\"\n");
+                for (ApiRequest apiRequest : requests) { writer.write(generateCsvLine(apiRequest)); }
+            }
+
             LOGGER.info("Respaldo CSV Generado exitosamente en: " + filePath.toAbsolutePath());
         } catch (IOException e) {
             LOGGER.severe("Error crítico al intentar escribir el archivo CSV: " + e.getMessage());
         }
     }
 
+    private String generateCsvLine(ApiRequest apiRequest) {
+        return String.format("\"%s\",%s,%s,%s,\"%s\"\n",
+                escapeCsv(apiRequest.getApiName()),
+                apiRequest.getStatus(),
+                apiRequest.getChecked(),
+                apiRequest.getIsUp(),
+                escapeCsv(apiRequest.getErrorMessage()));
+    }
+
+    private String escapeCsv(String value) {
+        if (value == null) return "";
+        return value.replace("\"", "\"\"");
+    }
 }
