@@ -1,6 +1,6 @@
 package cl.apihealthcheck.helper;
 
-import cl.apihealthcheck.model.RestResponse;
+import cl.apihealthcheck.records.RestResponse;
 
 import java.io.IOException;
 import java.net.ConnectException;

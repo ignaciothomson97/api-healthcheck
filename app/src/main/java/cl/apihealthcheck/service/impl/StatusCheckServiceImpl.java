@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import cl.apihealthcheck.constants.Constants;
 import cl.apihealthcheck.entity.ApiRequest;
 import cl.apihealthcheck.helper.RequestHandler;
-import cl.apihealthcheck.model.RestResponse;
+import cl.apihealthcheck.records.RestResponse;
 import cl.apihealthcheck.repository.RequestRepository;
 import cl.apihealthcheck.service.StatusCheckService;
 
