@@ -59,10 +59,4 @@ public class StatusCheckServiceImpl implements StatusCheckService {
         RequestRepository requestRepository = new RequestRepository();
         requestRepository.save(apiRequest);
     }
-
-    /*
-      Modificar la tabla para que guarde registros por 1 semana, despues, se limpia la tabla.
-      Justo antes de limpiar la tabla, guardaremos los registros de la misma en un log.
-      TODO: Añadir interactividad, generar un modelo pub/sub para notificar eventos
-     */
 }
