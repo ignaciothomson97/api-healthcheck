@@ -13,12 +13,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class CsvExport {
-    private static final Logger LOGGER = Logger.getLogger(CsvExport.class.getName());
+public class DataHandler {
+    private static final Logger LOGGER = Logger.getLogger(DataHandler.class.getName());
     private static final String BACKUP_DIRECTORY = "db-backup/";
     private final RequestRepository requestRepository;
 
-    public CsvExport(RequestRepository requestRepository) {
+    public DataHandler(RequestRepository requestRepository) {
         this.requestRepository = requestRepository;
     }
 
@@ -40,9 +40,10 @@ public class CsvExport {
             try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
                 writer.write("\"API Name\",\"Status Code\",Checked,\"Is UP\",\"Error Message\"\n");
                 for (ApiRequest apiRequest : requests) { writer.write(generateCsvLine(apiRequest)); }
+                LOGGER.info("Respaldo CSV Generado exitosamente en: " + filePath.toAbsolutePath());
             }
-
-            LOGGER.info("Respaldo CSV Generado exitosamente en: " + filePath.toAbsolutePath());
+            requestRepository.cleanTable();
+            LOGGER.info("Registros de la Base de Datos limpiados exitosamente.");
         } catch (IOException e) {
             LOGGER.severe("Error crítico al intentar escribir el archivo CSV: " + e.getMessage());
         }
