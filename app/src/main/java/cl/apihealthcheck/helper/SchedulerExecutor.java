@@ -15,7 +15,7 @@ public class SchedulerExecutor {
     private static final Logger LOGGER = Logger.getLogger(SchedulerExecutor.class.getName());
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final StatusCheckService statusCheck = new StatusCheckServiceImpl();
-    private final CsvExport csvExport = new CsvExport(new RequestRepository());
+    private final DataHandler dataHandler = new DataHandler(new RequestRepository());
     private final List<ScheduledJob> scheduledJobs = buildScheduledJobs();
 
     public void start() {
@@ -60,8 +60,8 @@ public class SchedulerExecutor {
                 ),
                 new ScheduledJob(
                         "CsvExport",
-                        csvExport::exportRecords,
-                        0, 60, TimeUnit.MINUTES
+                        dataHandler::exportRecords,
+                        7, 7, TimeUnit.DAYS
                 )
         );
     }
