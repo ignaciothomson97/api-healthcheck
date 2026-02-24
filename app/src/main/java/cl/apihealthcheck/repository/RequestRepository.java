@@ -16,6 +16,8 @@ public class RequestRepository {
             "INSERT INTO public.api_status(api_name, status, checked, is_up, error_message) VALUES(?, ?, ?, ?, ?)";
     private static final String SELECT_QUERY =
             "SELECT * FROM public.api_status";
+    private static final String TRUNCATE_QUERY =
+            "TRUNCATE TABLE public.api_status";
 
     public void save(ApiRequest apiRequest) {
         try (Connection conn = DatabaseConnection.connect();
@@ -57,5 +59,14 @@ public class RequestRepository {
             LOGGER.severe(() -> "Ha ocurrido un error al hacer SELECT en Base de Datos: " + e.getMessage());
         }
         return requests;
+    }
+
+    public void cleanTable() {
+        try (Connection conn = DatabaseConnection.connect();
+             Statement statement = Objects.requireNonNull(conn).createStatement()) {
+            statement.executeUpdate(TRUNCATE_QUERY);
+        } catch (SQLException e) {
+            LOGGER.severe(() -> "Ha ocurrido un error al hacer TRUNCATE en Base de Datos: " + e.getMessage());
+        }
     }
 }
