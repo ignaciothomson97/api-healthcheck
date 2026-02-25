@@ -1,3 +1,4 @@
 .vscode/settings.json
 app/target/
 /.idea/
+/db-backup/
